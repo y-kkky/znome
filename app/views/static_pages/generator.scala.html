@@ -1,0 +1,39 @@
+@()(implicit request: play.api.mvc.Request[Any])
+@import layouts._
+@main("Генератор") {
+<script type="text/javascript" src="@routes.Assets.at("javascripts/generator.js")"></script>
+<h1>Генератор питань для сайту</h1>
+<div class="well helper">
+    <select id="selector" onchange="onChangeChecker();">
+      <option selected disabled>Оберіть тип питання</option>
+      <option value="1">Обери відповідь</option>
+      <option value="2">Поєднай</option>
+      <option value="3">Введи відповідь</option>
+      <option value="4">Декілька правильних</option>
+    </select>
+    <input type="text" id="numvar" placeholder="Кількість варіантів">
+    <button onclick="addquest();" class="btn btn-inverse">Додати</button>
+    <button onclick="formxml();" class="btn btn-inverse">Сформувати xml</button>
+  </div>
+<div class="well" id="containero">
+</div>
+<div class="well" id="xmlfield">
+</div>
+<style>
+#toTop {
+position: fixed;
+z-index: 9999;
+bottom: 200px;
+right: 5px;
+background: #F4FFBF;
+border: 1px solid #ccc;
+padding: 5px;
+cursor: pointer;
+color: #666;
+text-decoration: none;
+width: 70px;
+text-align: center
+}
+</style>
+<a href="#" id="toTop">ВГОРУ</a>
+}

@@ -1,0 +1,131 @@
+@(id: Long)(implicit request: play.api.mvc.Request[Any])
+@import layouts._
+@main("Матеріали") {
+   @if(id == 1){
+<div class="well">
+<a href="javascript:look('ol1');">Список творів</a>
+<ol id="ol1" style="display: none;">
+<li>Пісні Марусі Чурай. <a href="" class="zzz">«Віють вітри»</a>, <a href="" class="zzz">«Засвіт встали козаченьки»</a></li>
+<li>Історичні пісні. <a href="" class="zzz">«Ой Морозе, Морозенку»</a>, <a href="" class="zzz">«Чи не той то Хміль»</a>.</li>
+<li><a href="" class="zzz">«Дума про Марусю Богуславку»</a>. Балада <a href="" class="zzz">«Бондарівна»</a></li>
+<li><a href="" class="zzz">«Повість минулих літ»</a> (уривки про заснування Києва, про помсту княгині Ольги, про напад хозарів)</li>
+<li><a href="" class="zzz">«Слово про похід Ігорів»</a></li>
+<li>Григорій Сковорода. <a href="" class="zzz">«De libertate»</a>, <a href="" class="zzz">«Всякому місту – звичай і права»</a>, <a href="" class="zzz">«Бджола та Шершень»</a>, афоризми</li>
+<li>Іван Котляревський. <a href="" class="zzz">«Енеїда»</a>, <a href="" class="zzz">«Наталка Полтавка»</a></li>
+<li>Г. Квітка-Основ’яненко. <a href="" class="zzz">«Маруся»</a></li>
+<li>Тарас Шевченко. <a href="" class="zzz">«До Основ’яненка»</a>, <a href="" class="zzz">«Катерина»</a>, <a href="" class="zzz">«Гайдамаки»</a>, <a href="" class="zzz">«Кавказ»</a>, <a href="" class="zzz">«Сон»</a> (У всякого своя доля), <a href="" class="zzz">«І мертвим, і живим, і ненарожденним…»</a>, <a href="" class="zzz">«Заповіт»</a>, <a href="" class="zzz">«Мені однаково»</a></li>
+<li>Пантелеймон Куліш. <a href="" class="zzz">«Чорна рада»</a></li>
+<li>Марко Вовчок. <a href="" class="zzz">«Максим Гримач»</a></li>
+<li>Іван Нечуй-Левицький. <a href="" class="zzz">«Кайдашева сім’я»</a> </li>
+<li>Панас Мирний <a href="" class="zzz">«Хіба ревуть воли, як ясла повні?»</a></li>
+<li>Іван Карпенко-Карий. <a href="" class="zzz">«Мартин Боруля»</a></li>
+<li>Іван Франко. <a href="" class="zzz">«Гімн»</a>, <a href="" class="zzz">«Чого являєшся мені у сні»</a>, <a href="" class="zzz">«Мойсей»</a></li>
+<li>Михайло Коцюбинський. <a href="" class="zzz">«Тіні забутих предків»</a>, <a href="" class="zzz">«Intermezzo»</a></li>
+<li>Ольга Кобилянська. <a href="" class="zzz">«Земля»</a></li>
+<li>Леся Українка. <a href="" class="zzz">«Contra spem spero!»</a>, <a href="" class="zzz">«Лісова пісня»</a></li>
+<li>Василь Стефаник. <a href="" class="zzz">«Камінний хрест»</a></li>
+<li>Микола Вороний. <a href="" class="zzz">«Блакитна Панна»</a></li>
+<li>Олександр Олесь. <a href="" class="zzz">«Чари ночі»</a>, <a href="" class="zzz">«О слово рідне! Орле скутий!..»</a></li>
+<li>Володимир Винниченко. <a href="" class="zzz">«Момент»</a></li>
+<li>Павло Тичина. <a href="" class="zzz">«О панно Інно»</a>, <a href="" class="zzz">«Арфами, арфами…»</a>, <a href="" class="zzz">«Ви знаєте, як липа шелестить…»</a></li>
+<li>Максим Рильський <a href="" class="zzz">«Молюсь і вірю…»</a></li>
+<li>Микола Хвильовий. <a href="" class="zzz">«Я (Романтика)»</a></li>
+<li>Юрій Яновський. <a href="" class="zzz">«Подвійне коло»</a>, <a href="" class="zzz">«Шаланда в морі»</a></li>
+<li>Володимир Сосюра. <a href="" class="zzz">«Любіть Україну»</a></li>
+<li>Валер’ян Підмогильний. <a href="" class="zzz">«Місто»</a></li>
+<li>Остап Вишня. <a href="" class="zzz">«Моя автобіографія»</a>, <a href="" class="zzz">«Сом»</a></li>
+<li>Микола Куліш. <a href="" class="zzz">«Мина Мазайло»</a></li>
+<li>Богдан-Ігор Антонич. <a href="" class="zzz">«Різдво»</a></li>
+<li>Олександр Довженко. <a href="" class="zzz">«Україна в огні»</a>, <a href="" class="zzz">«Зачарована Десна»</a></li>
+<li>Андрій Малишко <a href="" class="zzz">«Пісня про рушник»</a></li>
+<li>Василь Симоненко. <a href="" class="zzz">«Лебеді материнства»</a></li>
+<li>Олесь Гончар. <a href="" class="zzz">«За мить щастя»</a></li>
+<li>Григір Тютюнник. <a href="" class="zzz">«Три зозулі з поклоном»</a></li>
+<li>Василь Стус. <a href="" class="zzz">«Як добре те, що смерті не боюсь я»</a>, <a href="" class="zzz">«О земле втрачена, явися!..»</a></li>
+<li>Іван Драч. <a href="" class="zzz">«Балада про соняшник»</a></li>
+<li>Ліна Костенко. <a href="" class="zzz">«Страшні слова, коли вони мовчать»</a>, <a href="" class="zzz">«Українське альфреско»</a>, <a href="" class="zzz">«Маруся Чурай»</a></li>
+<li>Іван Багряний. <a href="" class="zzz">«Тигролови»</a></li>
+<li>Євген Маланюк. <a href="" class="zzz">«Стилет чи стилос?»</a></li>
+</ol>
+<script>
+// Вадим Клименко, спасибо!!!
+$(document).ready(function(){
+	$(".zzz").map(function(indx, element){
+		$(this).attr("href","https://google.com.ua/search?q=site%3Aukrlib.com.ua+"+encodeURIComponent($(this).text()));
+                $(this).attr("target", "_blank");
+	});
+})
+</script>
+<script>
+  function look(type){
+  param=document.getElementById(type);
+  if(param.style.display == "none") param.style.display = "block";
+  else param.style.display = "none";
+}
+</script>
+</div>
+<div class="well">
+  <h2>Посилання</h2>
+  <ul>
+    <li><a href="http://www.twirpx.com/file/506441/" target="_blank">Дубчак О.П. Українська мова та література. ЗНО 2011</a></li>
+    <li><a href="http://www.twirpx.com/file/551648/" target="_blank">Білецька О. Українська мова. Зразки висловлювань на дискусійну тему</a></li>
+    <li><a href="http://www.twirpx.com/file/763489/" target="_blank">Авраменко О.М. Українська література: Хрестоматія для підготовки до ЗНО</a></li>
+    <li><a href="http://schoollit.com.ua/" target="_blank">Все для ЗНО з української літератури</a></li>
+    <li><a href="http://www.twirpx.com/file/727034/" target="_blank">Щурова Т.В. ЗНО. Готуємося до творчого завдання з української мови та літератури</a></li>
+</ul>
+</div>
+   }
+   @if(id == 2){
+<div class="well">
+  <h2>Посилання</h2>
+  <ul>
+    <li><a href="http://www.twirpx.com/file/700076/" target="_blank">Нелін Є.П. Математика. Експрес-підготовка. ЗНО-2012. Нова специфікація 2012</a></li>
+    <li><a href="http://www.twirpx.com/file/711574/" target="_blank">Індивідуальний комплект для підготовки до зовнішнього незалежного оцінювання 2012 (математика)</a></li>
+  </ul>
+</div>
+   }
+   @if(id == 3){
+<div class="well"><ul>
+    <h2>Посилання</h2>
+    <li><a target="_blank" href="http://www.marriage.ru/art/obr01/0002.htm" >Як легко вивчити часи</a> (російською)</li>
+    <li><a target="_blank" href="http://real-english.ru/crash/lesson5.htm">Часи в англійській мові</a></li>
+    <li><a target="_blank" href="http://lingualeo.com">LinguaLeo</a></li>
+</ul></div>
+   }
+   @if(id ==4){
+
+}
+   @if(id == 5){
+<div class="well"><ul>
+  <h2>Посилання</h2>
+<li><a target="_blank" href="http://www.twirpx.com/file/701870/">Ненашев І.Ю. Фізика. Експрес-підготовка. ЗНО-2012. Нова специфікація 2012</a></li>
+<li><a target="_blank" href="http://www.twirpx.com/file/494907/">Альошина М.О., Богданова Г.С., Кирик Л.А. та ін. Фізика: Комплексне видання (для підготовки до ЗНО з фізики)</a></li>
+<li><a target="_blank" href="http://www.twirpx.com/file/792088/">Євлахова О.М., Бондаренко М.В. Ґрунтовна підготовка до ЗНО і ДПА за 50 тижнів. Фізика</a></li></ul>
+   }
+   @if(id == 6){
+
+   }
+   @if(id == 7){
+
+   }@if(id == 8){
+  <div class="well"><ul>
+  <h2>Посилання</h2>
+      <li><a target="_blank" href="http://www.twirpx.com/file/871920/">Бичковська О.М., Горлач Н.І., Горська О.С. Географія. Збірник завдань</a></li>
+      <li><a target="_blank" href="http://www.twirpx.com/file/871892/">Довгань Г.Д. Географія. 6-10 класи. Тренувальні тести до всіх тем. Відповіді</a></li>
+    </ul>
+   }
+   @if(id == 9){
+    <div class="well"><ul>
+  <h2>Посилання</h2>
+	<li><a target="_blank" href="http://www.twirpx.com/file/815654/">Власов B.C., Кульчицький С.В. Історія України: комплексне видання</a></li>
+	<li><a target="_blank" href="http://www.twirpx.com/file/261415/">Все до ЗНО з історії України</a></li>
+	<li><a target="_blank" href="http://www.twirpx.com/file/897520/">Комп'ютерна програма тестування з історії України</a></li>
+</ul>
+   }
+   @if(id == 10){
+      <div class="well"><ul>
+  <h2>Посилання</h2>
+	  <li><a target="_blank" href="http://www.twirpx.com/file/868596/">Мирошниченко В.О. Всесвітня історія. Тренувальні тести: 6-11 класи</a></li>
+	</ul>
+   }
+}

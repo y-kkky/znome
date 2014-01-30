@@ -1,0 +1,105 @@
+@(message1: String, form: Form[(String, String)], user_count: Long, test_count: Long, daily_count: Long)(implicit flash: Flash, request: play.api.mvc.Request[Any])
+@import layouts._
+@main("ЗНО 2014") {
+  @flash.get("success").map { message =>
+    <div class="alert alert-success">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    @message
+    </div>
+  }
+  @flash.get("error").map { message =>
+    <div class="alert alert-error">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    @message
+    </div>
+  }
+  @if(message1!=""){
+    <div class="alert alert-error">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    @message1
+    </div>
+  }
+  <link href='http://fonts.googleapis.com/css?family=Lobster&subset=cyrillic' rel='stylesheet' type='text/css'>
+      <div class="well" style="padding-bottom: 0px;">
+  <h2 style="font-family: Lobster; font-size: 50px;">Вітаємо на сайті для підготовки до ЗНО</h2>
+  </div>
+  @if(!request.session.get(Security.username).isEmpty){
+    <div class="well" style="padding-bottom: 0px;">
+    @helper.form(action = routes.User.peopleSearch){
+      <input type="text" id="name" name="name" placeholder="Введіть прізвище" style="width: 500px;">
+      <select id="city" name="city">
+      <option value="" selected>Оберіть область</option>
+      <option value="Вінницька">Вінницька</option>
+      <option value="Волинська">Волинська</option>
+      <option value="Дніпропетровська">Дніпропетровська</option>
+      <option value="Донецька">Донецька</option>
+      <option value="Житомирська">Житомирська</option>
+      <option value="Закарпатська">Закарпатська</option>
+      <option value="Запорізька">Запорізька</option>
+      <option value="Івано-Франківська">Івано-Франківська</option>
+      <option value="Київська">Київська</option>
+      <option value="Кіровоградська">Кіровоградська</option>
+      <option value="Луганська">Луганська</option>
+      <option value="Львівська">Львівська</option>
+      <option value="Миколаївська">Миколаївська</option>
+      <option value="Одеська">Одеська</option>
+      <option value="Полтавська">Полтавська</option>
+      <option value="Рівненська">Рівненська</option>
+      <option value="Сумська">Сумська</option>
+      <option value="Тернопільська">Тернопільська</option>
+      <option value="Харківська">Харківська</option>
+      <option value="Херсонська">Херсонська</option>
+      <option value="Хмельницька">Хмельницька</option>
+      <option value="Черкаська">Черкаська</option>
+      <option value="Чернівецька">Чернівецька</option>
+      <option value="Чернігівська">Чернігівська</option>
+      </select>
+      <input type="submit" class="btn-inverse" value="Знайти" style="width: 100px;">
+    }
+    </div>
+  }
+  <div class="well center">
+  <a href="#more" role="button" class="btn btn-large btn-info" data-toggle="modal">Дізнатися більше</a>
+  <a href="@routes.Static.presentation" onclick="return confirm('Для переміщення по слайдам використовуйте стрілки.');" class="btn btn-large btn-primary">Презентація</a>
+  <a href="@routes.Lessons.allLessons" class="btn btn-large btn-danger">Предмети</a>
+  @if(!request.session.get(Security.username).isEmpty){
+    <a href="@routes.Lessons.profDaily" class="btn btn-large btn-inverse">Щоденне змагання</a>
+  }else{
+    <a href="@routes.User.search" class="btn btn-large btn-inverse">Пошук учнів</a>
+  }
+  </div>
+  <div>
+  <table style="font-size: 20px; width: 50%;" class="table table-hover">
+  <tr><td>Користувачів зареєстровано: </td><td style="color: brown;">@user_count</td></tr>
+  <tr><td>Тестів пройдено: </td><td style="color: brown;">@test_count</td></tr><br>
+  <tr><td>Щоденних змагань пройдено: </td><td style="color: brown;">@daily_count</td></tr>
+  </table>
+  </div>
+
+  <div id="more" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  <h3 id="myModalLabel">Сайт для підготовки до ЗНО</h3>
+  </div>
+  <div class="modal-body">
+  <p>Ви навчаєтеся у 11 класі і хочете підготуватися до іспитів якомога краще?
+  Ви завітали за адресою. Використовуючи цей сайт можна вдосконалити свої знання,
+  підготуватся до ЗНО і просто позмагатися з іншими.
+    </p>
+  <p>
+  Користування сайтом повністю безкоштовне; єдине, що дозволяє використовувати всі можливості сайту - це реєстрація.
+    Без реєстрації ви можете тільки переглядати матеріали до предметів, а з реєстрацією - розв'язувати білети, дивитися свою
+  статистику, брати участь у щоденних змаганнях і ще багато цікавого.
+    </p>
+  <p>
+  Якщо ви хочете дізнатися, яким чином побудований сайт, як саме буде проходити
+  підготовка, і що було зроблено для підтримання змагального духу - перейдіть по
+  цьому посиланню: <a href="/about">Про проект</a>
+  <p>Також ви можете подивитися <a href="@routes.Static.presentation">презентацію</a> про можливості проекту.</p>
+  </p>
+  </div>
+  <div class="modal-footer">
+  <button class="btn" data-dismiss="modal" aria-hidden="true">Закрити</button>
+  </div>
+  </div>
+}

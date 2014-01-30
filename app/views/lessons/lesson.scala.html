@@ -1,0 +1,64 @@
+
+@(lesson: Lesson)(implicit request: play.api.mvc.Request[Any])
+@import layouts._
+@import controllers.Lessons
+@import models.mUser
+@main("Предмети") {
+    <div class="spanmax well-large">
+        <span class="lessonName center">@lesson.name</span>
+    </div>
+    <div class="span9 well">
+        <h2>Матеріали</h2>
+        <h4>Офіційні матеріали з сайту <a href="http://testportal.gov.ua/" target="_blank">центру оцінювання якості освіти</a></h4>
+        @if(lesson.id == 1 || lesson.id == 3 || lesson.id == 4 || lesson.id == 12){
+            @if(lesson.id == 4) {
+                <strong>Французська мова</strong><br>
+                <ol>
+                    <li><a href="@routes.Assets.at("files/4/f_krut.pdf")">Критерії оцінювання тестового завдання з розгорнутою відповіддю (власного висловлення).</a></li>
+                    <li><a href="@routes.Assets.at("files/4/f_har.pdf")">Характеристика тесту.</a></li>
+                </ol>
+                <strong>Німецька мова</strong><br>
+                <ol>
+                    <li><a href="@routes.Assets.at("files/4/d_krut.pdf")">Критерії оцінювання тестового завдання з розгорнутою відповіддю (власного висловлення).</a></li>
+                    <li><a href="@routes.Assets.at("files/4/d_har.pdf")">Характеристика тесту.</a></li>
+                </ol>
+                <strong>Загальне програма</strong><br>
+                    <a href="@routes.Assets.at("files/4/prog.pdf")">Програма зовнішнього незалежного оцінювання.</a>
+
+            } else {
+            <ol>
+                <li><a href="@routes.Assets.at("files/"+lesson.id+"/krut.pdf")">Критерії оцінювання тестового завдання з розгорнутою відповіддю (власного висловлення).</a></li>
+                <li><a href="@routes.Assets.at("files/"+lesson.id+"/har.pdf")">Характеристика тесту.</a></li>
+                <li><a href="@routes.Assets.at("files/"+lesson.id+"/prog.pdf")">Програма зовнішнього незалежного оцінювання.</a></li>
+            </ol>
+            }
+        }else {
+            <ol>
+                <li><a href="@routes.Assets.at("files/"+lesson.id+"/har.pdf")">Характеристика тесту.</a></li>
+                <li><a href="@routes.Assets.at("files/"+lesson.id+"/prog.pdf")">Програма зовнішнього незалежного оцінювання.</a></li>
+            </ol>
+        }
+
+        <h4>Матеріали, що допоможуть при підготовці</h4>
+	<a href="@routes.Lessons.materials(lesson.id)">Посилання на матеріал</a>
+    </div>
+    @if(!request.session.get(Security.username).isEmpty) {
+      <a href="@routes.Lessons.prep(lesson.id)" style="text-decoration: none; text-align: center;">
+      <div class="center span9 lesson well" onmouseover="showBlock();">
+        <h2><u>Тести тут!</u></h2>
+      </div>
+      <script>
+        function showBlock(){
+          $("#block").css("display", "block");
+        }
+      </script>
+      <div class="span9 lesson well" id="block" style="display: none;">
+      <h4>Тестування</h4>
+      <h4>@Lessons.lessonStat(request.session.get(Security.username).getOrElse("").toLong, lesson.id)%</h4>
+      <div class="progress">
+        <div class="bar" style="width: @Lessons.lessonStat(request.session.get(Security.username).getOrElse("").toLong, lesson.id)%"></div>
+      </div>
+      </div>
+      </a>
+    }
+}

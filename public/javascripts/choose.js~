@@ -1,0 +1,10 @@
+$( ".selectpicker" ).change(function() {
+    $("table").css("display", "none");
+    $("body").css({"padding-top":"0px"});
+    $("#changer").css("display", "block");
+    $(".footer.navbar-fixed-bottom").attr("class", "footer");
+    $("#"+$(this).val()).css("display", "table");
+    if($("#changer").height() < 250){
+	$(".footer").attr("class", "footer navbar-fixed-bottom");
+    }
+});

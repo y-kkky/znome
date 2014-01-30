@@ -1,0 +1,83 @@
+/* mixins, variables, etc. */
+
+@grayMediumLight: #eaeaea;
+/* universal */
+
+html, body {
+    height: 100%;
+}
+
+#holder {
+    min-height: 100%;
+    margin: 0 auto -35px;
+    height: auto !important;
+    height: 100%;
+}
+
+#push {
+    height: 24px;
+}
+
+footer {
+  clear: both;
+  padding-top: 6px;
+  border-top: 1px dashed;
+  height: 24px;
+  small {
+    float: left;
+  }
+  ul {
+    float: right;
+    list-style: none;
+
+    li {
+      float: left;
+      margin-left: 10px;
+    }
+
+  }
+}
+
+#holder > .container {
+    padding-top: 60px;
+}
+
+
+section {
+  overflow: auto;
+}
+
+textarea {
+  resize: vertical;
+}
+
+table {
+  background-color: transparent;
+}
+
+
+.center {
+  text-align: center;
+  h1 {
+    margin-bottom: 10px;
+  }
+}
+
+
+/* header */
+#logo {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.9em;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+//  padding-top: 12px;
+  font-weight: bold;
+  line-height: 1;
+  &:hover {
+    color: white;
+    text-decoration: none;
+  }
+
+}

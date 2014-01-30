@@ -1,0 +1,40 @@
+@(user: mUser, lesson: Lesson, bilets: List[Bilet], counter: Int)(implicit request: play.api.mvc.Request[Any])
+@import layouts._
+@import controllers.Lessons
+@import models.Stat
+@import models.BiletStat
+@main(lesson.name) {
+  <div class="spanmax well-large">
+  <span class="lessonName center">@lesson.name</span>
+  </div>
+  <div class="spanmax well">
+  @if(bilets.isEmpty){
+    <h2>Білетів для цього предмету немає</h2>
+  }
+  @bilets.map{bilet =>
+    @if(Stat.exists(user.id, bilet.id)){
+      @defining(BiletStat.find(user.id, bilet.id)){ biletStat =>
+        <h4>@bilet.name</h4>
+        @defining((biletStat.ra*100)/biletStat.max){perc =>
+          @if(perc>70){
+            <p>Правильно @perc%. Зараховано</p>
+            <div class="progress">
+            <div class="bar" style="background-color: #00FF00; width: @perc%"></div>
+            </div>
+          }else{
+            <p>Правильно @perc%. Не зараховано.</p>
+            <div class="progress">
+            <div class="bar" style="background-color: #D00000; width: @((biletStat.ra*100)/biletStat.max)%"></div>
+            </div>
+          }
+        }
+        <a href="@routes.Lessons.bilet(bilet.id)" style="font-size: 15px;">Пройти ще раз (старий результат буде видалено)</a><br><br>
+        <a href="@routes.Lessons.biletStat(bilet.id)"style="font-size: 20px;">Детальніше</a>
+      }
+    }else{
+      <a href="@routes.Lessons.bilet(bilet.id)"><h4>@bilet.name</h4></a>
+    }
+    <br><hr><br>
+  }
+  </div>
+}

@@ -1,0 +1,60 @@
+@()(implicit flash: Flash, request: play.api.mvc.Request[Any])
+@import layouts._
+@main("Щоденне змагання") {
+<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script type="text/javascript" src="@routes.Lessons.javascriptRoutes"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<link rel="stylesheet" href="@routes.Assets.at("stylesheets/highlight.css")" type="text/css" media="screen" />
+@flash.get("success").map { message =>
+  <div class="alert alert-success">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  @message
+  </div>
+}
+@flash.get("error").map { message =>
+  <div class="alert alert-error">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  @message
+  </div>
+    }
+<h2 id="bl"></h2>
+<div class="well center">
+  <select id="sell" style="font-size: 20px; width: 300px; height: 40px;">
+  <option disabled selected>Оберіть предмет</option>
+  <option value="0">Змішане змагання</option>
+  <option value="1">Мова і література</option>
+  <option value="2">Математика</option>
+  <option value="3">Англійська мова</option>
+  <option value="4">Іноземна мова</option>
+  <option value="5">Фізика</option>
+  <option value="6">Хімія</option>
+  <option value="7">Біологія</option>
+  <option value="8">Географія</option>
+  <option value="9">Історія України</option>
+  <option value="10">Всесвітня історія</option>
+  <option value="11">Всесвітня література</option>
+  <option value="12">Російська мова</option>
+  </select>
+</div>
+<div class="well center" style="display: none;">
+  <a id="knopka" class="btn btn-large btn-info">Щоденне змагання</a>
+</div>
+<div class="well" style="display: none;">
+  <h3 class="center">Статистика щоденних змагань</h3><br>
+  <form id="formm" class="center" method="POST">
+    <p>Оберіть дату: <input type="text" name="datepicker" id="datepicker">
+      <input type="submit" value="Перейти"></p>
+  </form>
+  <div style="font-size: 12px; text-align: center;">Дні, у які ви брали участь у змаганнях за цим предметом, будуть підсвічені <span style="color: green;">зеленим</span> кольором.</div>
+</div>
+<div class="well" style="display: none;" onmousemove="funn();">
+  <h3 class="center">Рейтинги</h3>
+  <div class="center">
+    <a class="btn btn-large btn-inverse" id="aa1">За день</a>
+    <a class="btn btn-large btn-inverse" id="aa2">За місяць</a>
+    <a class="btn btn-large btn-inverse" id="aa3">За рік</a>
+    <a class="btn btn-large btn-inverse" id="aa4">За весь час</a>  
+  </div>
+</div>
+<script type="text/javascript" src="@routes.Assets.at("javascripts/profdaily.js")"></script>
+	}

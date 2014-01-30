@@ -1,0 +1,65 @@
+@(questions: List[Question], bilet_id: Long, stat: List[Stat])(implicit flash: Flash, request: play.api.mvc.Request[Any])
+@import layouts._
+@import controllers.Lessons
+@import models.mUser
+@main("Статистика") {
+	
+<script type="text/javascript" src="@routes.Assets.at("javascripts/showhi.js")"></script>
+<style>table, th, td{border: 1px solid gray;}</style>
+   @flash.get("success").map { message =>
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            @message
+        </div>
+    }
+    @flash.get("error").map { message =>
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            @message
+        </div>
+    }
+  <div class="tabbable">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab1" data-toggle="tab">Результат</a></li>
+                        <li><a href="#tab2" data-toggle="tab">Детальна статистика</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab1">
+
+                        	  <table style="font-size: 20px; width: 50%; " class="table table-hover">
+                        	  <tbody>
+  <tr><td>Результат: </td><td style="color: red;">11 балів</td></tr>
+  <tr><td>Максимально можливо: </td><td>21 бал</td></tr><br>
+  <tbody>
+  </table>
+  <div class="well">
+  <h3>Статистика по розділах</h3><br>	
+  	<table class="table table-bordered">
+  		<thead>
+  			<tr><td>Назва розділу</td><td>Кількість питань з цього розділу</td><td>Кількість правильних відповідей</td></tr>
+  		</thead>
+  		<tbody>
+  			<tr style="color: red;"><td>Оптика</td><td>3</td><td>0</td></tr>
+  			<tr style="color: red;"><td>Електроіндукція</td><td>4</td><td>1</td></tr>
+  			<tr style="color: red;"><td>Електромагнітні хвилі</td><td>3</td><td>1</td></tr>
+  			<tr><td>Магнітне поле</td><td>2</td><td>1</td></tr>
+  			<tr><td>Прості механізми</td><td>3</td><td>2</td></tr>
+  			<tr><td>Основи електродинаміки</td><td>1</td><td>1</td></tr> 
+  			<tr><td>Закони збереження енергії</td><td>2</td><td>2</td></tr>
+  			<tr><td>Механіка</td><td>3</td><td>3</td></tr>  			  			 			  			  			  			
+  		</tbody>
+  	</table>
+  </div>
+                            
+                        </div>
+                        <div class="tab-pane" id="tab2">
+                            @for(question <- questions.zipWithIndex){
+    @Html(Lessons.showQuestionStat(question._1, question._2, stat(question._2)))
+  }
+                        </div>
+                          
+                    </div>
+                    </div>
+                    </div>
+   
+}

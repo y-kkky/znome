@@ -1,0 +1,51 @@
+@(users: List[mUser], num: Int)(implicit request: play.api.mvc.Request[Any])
+@import layouts._
+@import models.mUser
+@import controllers.User
+@main("Рейтинг") {
+<div class="well" style="padding-bottom: 0px;">
+	  @helper.form(action = routes.User.peopleSearch){
+	    <input type="text" id="name" name="name" placeholder="Введіть прізвище" style="width: 500px;">
+	    <select id="city" name="city">
+			      <option value="" selected>Оберіть область</option>
+			      <option value="Вінницька">Вінницька</option>
+			      <option value="Волинська">Волинська</option>
+			      <option value="Дніпропетровська">Дніпропетровська</option>
+			      <option value="Донецька">Донецька</option>
+			      <option value="Житомирська">Житомирська</option>
+			      <option value="Закарпатська">Закарпатська</option>
+			      <option value="Запорізька">Запорізька</option>
+			      <option value="Івано-Франківська">Івано-Франківська</option>
+				<option value="Київська">Київська</option>
+				<option value="Кіровоградська">Кіровоградська</option>
+				<option value="Луганська">Луганська</option>
+				<option value="Львівська">Львівська</option>
+				<option value="Миколаївська">Миколаївська</option>
+				<option value="Одеська">Одеська</option>
+				<option value="Полтавська">Полтавська</option>
+				<option value="Рівненська">Рівненська</option>
+				<option value="Сумська">Сумська</option>
+				<option value="Тернопільська">Тернопільська</option>
+				<option value="Харківська">Харківська</option>
+				<option value="Херсонська">Херсонська</option>
+				<option value="Хмельницька">Хмельницька</option>
+				<option value="Черкаська">Черкаська</option>
+				<option value="Чернівецька">Чернівецька</option>
+				<option value="Чернігівська">Чернігівська</option>
+			    </select>
+	    <input type="submit" class="btn-inverse" value="Знайти" style="width: 100px;">
+	  }
+	</div>
+@if(users.length == 0 && num == 1){
+<h2>Нікого не знайдено</h2>
+}else{
+@if(num == 1){
+<table id="people" class="table table-hover">
+<tr><th>Аватар</th><th>Ім'я та прізвище</th><th>Область</th><th>Школа</th></tr>
+}
+@users.map { user =>
+<tr onclick="document.location = '@routes.User.profile(user.id)';" style="cursor: pointer;"><td><img src="@User.gravatarFor(user.email)"</td><td>@user.name</td><td>@user.city</td><td>@user.school</td></tr>
+}
+</table>
+}
+}

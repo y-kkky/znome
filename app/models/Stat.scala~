@@ -1,0 +1,15 @@
+package models
+
+import play.api.db._
+import play.api.Play.current
+import play.api.cache._
+import scala.slick.driver.PostgresDriver.simple._
+import Helper.dbs
+
+case class Stat(user_id: Long, bilet_id: Long, question_id: Long, right: Int, answer: String)
+
+case class DailyStat(user_id: Long, question_id: Long, time: String, right: Int, answer: String, typ: Int)
+
+case class microDailyStat(user_id: Long, time: String, result_time: Long, score: Double, ids: String, typ: Int)
+
+case class BiletStat(user_id: Long, bilet_id: Long, ra: Int, max: Int)

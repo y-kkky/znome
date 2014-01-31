@@ -24,11 +24,11 @@
 }
 </tbody>
 </table>
-@if(page!=1){<table class="well" style="width: 100%">
+<table class="well" style="width: 100%">
   <tr width=100%>
     @if(page!=1){<td align=left><a href="@routes.Lessons.dailyRates(typ, page-1, typpy)"><img src="@routes.Assets.at("images/left.png")"/></a></td>}
     <td align=center>Сторінка @page</td>
-  @if(stat.length != 15){<td align=right><a href="@routes.Lessons.dailyRates(typ, page+1, typpy)"><img src="@routes.Assets.at("images/right.png")"/></a></td>}
+  @if(stat.length == 15){<td align=right><a href="@routes.Lessons.dailyRates(typ, page+1, typpy)"><img src="@routes.Assets.at("images/right.png")"/></a></td>}
   </tr>
-</table>}
+</table>
 }

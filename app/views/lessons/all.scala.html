@@ -1,4 +1,4 @@
-@(lessons: Seq[Lesson])(implicit request: play.api.mvc.Request[Any])
+@(lessons: List[Lesson])(implicit request: play.api.mvc.Request[Any])
 @import layouts._
 @main("Предмети") {
         @lessons.map { lesson =>

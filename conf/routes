@@ -55,10 +55,10 @@ POST	    /loadengine			 controllers.Lessons.postLoad
 GET	    /challenge/:type		 controllers.Lessons.daily(type: Int)
 POST	    /challenge/engine		 controllers.Lessons.dailyEngine(typ: Int)
 #daily challenge stat
-GET         /challenge/stat/:time/:typ		 controllers.Lessons.dailyStatGet(time: String, typ: Int)
+GET         /challenge/stat/:time/:typ		 controllers.Stats.dailyStatGet(time: String, typ: Int)
 GET	    /challenge/rate/:type/:typpy/:page	         controllers.Lessons.dailyRates(type: String, page: Long, typpy: Int)
 GET         /challenge			 controllers.Lessons.profDaily
-POST	    /challenge/stat/redirect/:typ	 controllers.Lessons.dailyStatRedirect(typ: Int)
+POST	    /challenge/stat/redirect/:typ	 controllers.Stats.dailyStatRedirect(typ: Int)
 
 GET 	    /slides			 controllers.Static.presentation
 

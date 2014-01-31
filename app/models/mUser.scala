@@ -73,7 +73,7 @@ object mUser{
     Cache.set("user_count", cached+1, 60*120)
     val timestamp: String = System.currentTimeMillis.toString
     val id = (users.map(u => (u.regtime, u.email, u.name, u.city, u.school, u.comments, u.lessons, u.pass, u.rank)) 
-        returning users.map(_.id)) += (timestamp, email, name, "", "", "", "", pass, 1)
+        returning users.map(_.id)) += (timestamp, email, name, "", "", "", "", hashPass(pass), 1)
     id
   }
   

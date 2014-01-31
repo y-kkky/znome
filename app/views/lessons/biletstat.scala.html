@@ -54,7 +54,7 @@
                         </div>
                         <div class="tab-pane" id="tab2">
                             @for(question <- questions.zipWithIndex){
-    @Html(Lessons.showQuestionStat(question._1, question._2, stat(question._2)))
+    @Html(Stats.showQuestionStat(question._1, question._2, stat(question._2)))
   }
                         </div>
                           

@@ -19,6 +19,6 @@
     }
 
    @for(question <- questions.zipWithIndex){
-    @Html(Lessons.showDailyQuestionStat(question._1, question._2, stat(question._2)))
+    @Html(Stats.showDailyQuestionStat(question._1, question._2, stat(question._2)))
   }
 }

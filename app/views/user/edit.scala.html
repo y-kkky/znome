@@ -38,7 +38,7 @@
                             <div id="city_field">
 			      <label>Область:</label>
 			    <select id="city" name="city">
-			      <option value="@{models.mUser.find(request.session.get(Security.username).getOrElse("").toLong).city}" selected>Оберіть область</option>
+			      <option value="@{models.mProfile.find(request.session.get(Security.username).getOrElse("").toLong).city}" selected>Оберіть область</option>
 			      <option value="Вінницька">Вінницька</option>
 			      <option value="Волинська">Волинська</option>
 			      <option value="Дніпропетровська">Дніпропетровська</option>

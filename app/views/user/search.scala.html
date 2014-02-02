@@ -44,8 +44,9 @@
 <tr><th>Аватар</th><th>Ім'я та прізвище</th><th>Область</th><th>Школа</th></tr>
 }
 @users.map { user =>
-<tr onclick="document.location = '@routes.User.profile(user.id)';" style="cursor: pointer;"><td><img src="@User.gravatarFor(user.email)"</td><td>@user.name</td><td>@user.city</td><td>@user.school</td></tr>
-}
+@defining(models.mProfile.find(user.id)){ profile=>
+<tr onclick="document.location = '@routes.User.profile(user.id)';" style="cursor: pointer;"><td><img src="@User.gravatarFor(user.email)"</td><td>@profile.name</td><td>@profile.city</td><td>@profile.school</td></tr>
+}}
 </table>
 }
 }

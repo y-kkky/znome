@@ -6,7 +6,7 @@ import play.api.data._
 import play.api.data.Forms._
 import play.api.libs.json._
 import models._
-import controllers.User.withUser
+import controllers.User.{withUser, withProfile}
 
 object Lessons extends Controller{
   
@@ -200,11 +200,11 @@ object Lessons extends Controller{
   }
 
   // Ежедневное соревнование
-  def daily(typ: Int) = withUser { user => implicit request =>
+  def daily(typ: Int) = withProfile { (user, profile) => implicit request =>
     // Шаг первый: проверяем, не проходил ли принимал ли участие пользователь сегодня в ежедневке
     val current_day = currentDate
     //Текущий день уже есть. Найдем предметы юзера
-    val lessons = User.codeToLessonsList(user.lessons)
+    val lessons = User.codeToLessonsList(profile.lessons)
     val microStat = microDailyStat.getForCheck(user.id, current_day, typ)
     if(microStat.length != 0){
       Redirect(routes.Lessons.profDaily).flashing("error" -> "Ви вже брали участь у змаганнях цього типу сьогодні.")

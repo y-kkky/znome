@@ -8,8 +8,9 @@
         </div>
         <nav>
     	  <ul class="nav pull-right">
+	    @defining(request.session.get(Security.username)) { id =>
             <li><a href="@routes.Static.zno">Що здавати?</a></li>
-            @if(request.session.get(Security.username).isEmpty) {
+            @if(id.isEmpty) {
     			<li><a href="@routes.User.login">Вхід</a></li>
     			<li><a href="@routes.User.register">Реєстрація</a></li>
     		} else {
@@ -19,15 +20,19 @@
                 Акаунт<b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
-                <li><a href="@routes.User.profile({request.session.get(Security.username).getOrElse("").toLong})">Мій профіль</a></li>
+                <li><a href="@routes.User.profile({id.getOrElse("").toLong})">Мій профіль</a></li>
                 <li><a href="@routes.User.preparation">Підготовка</a></li>  
 		<li><a href="@routes.Lessons.profDaily">Щоденне змагання</a></li>
                 <li><a href="@routes.User.edit">Змінити профіль</a></li>
+		@if(!id.isEmpty &&
+		models.mUser.find(id.getOrElse("").toLong).role > 0){
+		<li><a href="@routes.Admin.main">Адмінка</a></li>
+		}
                 <li class="divider"> </li>
                 <li><a href="@routes.User.logout">Вийти</a></li>
               </ul>
             </li>
-    		}    			
+    		}    			}
    		  </ul>
     	</nav>
     </div>

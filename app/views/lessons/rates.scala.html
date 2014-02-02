@@ -16,7 +16,7 @@
   @for(stat <- stat.zipWithIndex){
 <tr onclick="document.location = '@routes.User.profile(stat._1.user_id)';" style="cursor: pointer;">
   <td>@{(stat._2)+(15*(page-1))+1}</td>
-  <td>@{(mUser.find(stat._1.user_id)).name}</td>
+  <td>@{(mProfile.find(stat._1.user_id)).name}</td>
   <td>@stat._1.score</td>
   @if(typ!="day"){<td>@stat._1.time</td>}
   <td>@{Lessons.normalizeTime(stat._1.result_time)}</td>

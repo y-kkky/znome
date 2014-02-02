@@ -71,3 +71,5 @@ GET	    /jsroutes			 controllers.Lessons.javascriptRoutes
 
 # for news
 GET /news controllers.Admin.news
+# admin panel
+GET /admin controllers.Admin.main

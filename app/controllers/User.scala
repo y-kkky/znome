@@ -82,11 +82,11 @@ object User extends Controller with Secured {
           // Тут будет отсеиванье ненужных людей
 	  var users: List[mUser] = List()
 	  if(pattern._1 == "" && pattern._2 == ""){
-	    users = mUser.findPattern("%", "%")
+	    users = mProfile.findPattern("%", "%")
 	  }else{
 	    val name = "%" + pattern._1 + "%"
 	    val city = "%" + pattern._2 + "%"
-	    users = mUser.findPattern(name, city)
+	    users = mProfile.findPattern(name, city)
 	  }
 	  Ok(views.html.user.search(users, 1))
         })
@@ -166,63 +166,68 @@ object User extends Controller with Secured {
    */
 
   //Страница редактирования профиля пользователя.
-  def edit = withUser {
-    user =>
+  def edit = withProfile {
+    (user, profile) =>
       implicit request =>
-        Ok(views.html.user.edit(gravatarFor(user.email), editForm.fill(user.email, user.name, "", "", "", user.city, user.school, user.comments), lessonForm))
+        Ok(views.html.user.edit(gravatarFor(user.email), editForm.fill(user.email, profile.name, "", "", "", profile.city, profile.school, profile.comments), lessonForm))
   }
 
   // Обработка даных из формы редактирования профиля.
-  def changeUser = withUser { uuser =>
+  def changeUser = withProfile { (user, profile) =>
     implicit request =>
       editForm.bindFromRequest.fold(
         formWithErrors => BadRequest(views.html.user.edit(gravatarFor(username(request).toString), formWithErrors, lessonForm)),
-        user => {
-          if(user._4 != "" && user._5 != "") {
-            if(uuser.pass != mUser.hashPass(user._3))
+        user_form => {
+          if(user_form._4 != "" && user_form._5 != "") {
+            if(user.pass != mUser.hashPass(user_form._3))
               Redirect(routes.User.edit).flashing("error" -> "Ви неправильно ввели старий пароль")
-            else if(user._4 != user._5)
+            else if(user_form._4 != user_form._5)
               Redirect(routes.User.edit).flashing("error" -> "Ви неправильно ввели підтвердження пароля")
             else {
-	      val hashedPass = mUser.hashPass(user._4)
-              mUser.edit(uuser.id, user._1, user._2, hashedPass, user._6, user._7, user._8)
-	      val cached = cache.Cache.getOrElse("user_cache" + uuser.id){
-		mUser.find(uuser.id)
+	      val hashedPass = mUser.hashPass(user_form._4)
+              mUser.edit(user.id, user_form._1, hashedPass)
+	      val cached = cache.Cache.getOrElse("user_cache" + user.id){
+		mUser.find(user.id)
 	      }
-	      cache.Cache.set("user_cache" + uuser.id, cached.copy(pass = hashedPass), 60*120)
-              Redirect(routes.User.profile(uuser.id)).flashing("success" -> "Пароль був успішно змінений").withSession(Security.username -> uuser.id.toString, "id" -> (uuser.id).toString)
+	      cache.Cache.set("user_cache" + user.id, cached.copy(pass = hashedPass), 60*120)
+              Redirect(routes.User.profile(user.id)).flashing("success" -> "Пароль був успішно змінений").withSession(Security.username -> user.id.toString, "id" -> (user.id).toString)
             }
           }else{
-	    if(user._4 != user._5 || user._3 != "")
+	    if(user_form._4 != user_form._5 || user_form._3 != "")
 	      Redirect(routes.User.edit).flashing("error" -> "Ви не повністю заповнили форму зміни пароля")
 	    else{
-              mUser.edit(uuser.id, user._1, user._2, uuser.pass, user._6, user._7, user._8)
-	      val cached = cache.Cache.getOrElse("user_cache" + uuser.id){
-		mUser.find(uuser.id)
+              mUser.edit(user.id, user_form._1, user.pass)
+              mProfile.edit(user.id, user_form._2, user_form._6, user_form._7 , user_form._8)
+	      val cached = cache.Cache.getOrElse("user_cache" + user.id){
+		mUser.find(user.id)
 	      }
-	      cache.Cache.set("user_cache" + uuser.id, cached.copy(email = user._1, name = user._2, city = user._6, school = user._7, comments = user._8), 60*120)
-              Redirect(routes.User.profile(uuser.id)).flashing("success" -> "Профіль був успішно змінений").withSession(Security.username -> uuser.id.toString, "id" -> (uuser.id).toString)
+              val cached_profile = cache.Cache.getOrElse("profile_cache" + user.id){
+                mProfile.find(user.id)
+              }
+	      cache.Cache.set("user_cache" + user.id, cached.copy(email = user_form._1), 60*120)
+              cache.Cache.set("profile_cache" + user.id, cached_profile.copy(name = user_form._2, city = user_form._6, school = user_form._7, comments = user_form._8))
+              Redirect(routes.User.profile(user.id)).flashing("success" -> "Профіль був успішно змінений").withSession(Security.username -> user.id.toString, "id" -> (user.id).toString)
 	    }
           }
         })
   }
 
-  def changeLesson = withUser { user =>
+  def changeLesson = withProfile { (user, profile) =>
     implicit request =>
       lessonForm.bindFromRequest.fold(
-        formWithErrors => BadRequest(views.html.user.edit(gravatarFor(username(request).toString), editForm.fill(user.email, user.name, "", "", "", user.city, user.school, user.comments), lessonForm)),
+        formWithErrors => BadRequest(views.html.user.edit(gravatarFor(username(request).toString), editForm.fill(user.email, profile.name, "", "", "", profile.city, profile.school, profile.comments), lessonForm)),
         lessons => {
           val newlist = lessons.productIterator.toList
           val listComp = List(1, 2, 3, 4, 5, 6, 7, 8, 9, "a", "b", "c")
           var string: String = ""
           for(index <- 0 to 11)
             if(newlist(index)==true) string+=listComp(index)
-          mUser.editLessons(user.id, string)
-	  val cached = cache.Cache.getOrElse("user_cache" + user.id){
-	    mUser.find(user.id)
-	  }
-	  cache.Cache.remove("user_cache" + user.id)
-	  cache.Cache.set("user_cache" + user.id, cached.copy(lessons = string), 60*120)
+          mProfile.editLessons(profile.user_id, string)
+          val cached_profile = cache.Cache.getOrElse("profile_cache" + user.id){
+            mProfile.find(user.id)
+          }
+	  cache.Cache.remove("profile_cache" + user.id)
+	  cache.Cache.set("profile_cache" + profile.user_id, cached_profile.copy(lessons = string), 60*120)
           Redirect(routes.User.profile(user.id)).flashing(
             "success" -> "Інформація про предмети була успішно змінена."
           )
@@ -234,6 +239,7 @@ object User extends Controller with Secured {
   def profile(id: Long) = Action {
     implicit request =>
     val user = mUser.find(id)
+    val profile = mProfile.find(id)
     val lessList = Lesson.findAll
     val statList: List[microDailyStat] = microDailyStat.getByUserOnly(user.id)
     var typList = List[Int]()
@@ -250,7 +256,7 @@ object User extends Controller with Secured {
         temporary = "Змішане змагання"
       properLess.update(x, temporary)
     }
-    Ok(views.html.user.profile(user, gravatarFor(user.email), statList, properLess))
+    Ok(views.html.user.profile(user, profile, gravatarFor(user.email), statList, properLess))
   }
 
   // Страница восстановления пароля.
@@ -266,13 +272,13 @@ object User extends Controller with Secured {
         formWithErrors => BadRequest(views.html.user.recover(formWithErrors)),
         email => {
           val user = mUser.findByEmail(email)
-
+          val profile = mProfile.find(user.id)
           // Ссылка генерируется по принципу www.example.com/1/2 , где 1 - почта, а 2 - хешированый пароль
           val href = "http://www." + request.domain + routes.User.changePassword(email, sha1(user.pass))
           sendEmail(user.email,
             s"""<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>
 	      <p>Шановний ${
-    user.name
+    profile.name
     }!</p>
 
           <p>    Ви отримали цей лист через те, що забули пароль (якщо це не так - видаліть лист).<br>
@@ -291,12 +297,13 @@ object User extends Controller with Secured {
     // Отсеивается случай, когда пользователь правильно набрал email, но неправильно - пароль
       try {
         val user = mUser.findByEmail(email)
+        val profile = mProfile.find(user.id)
         if (sha1(user.pass) == hash) {
           val newPass = randomPassword
           sendEmail(email,
             s"""<html><head><meta http-equiv=«Content-Type» content=«text/html; charset=utf-8»></head><body>
 <p>           Шановний ${
-    user.name
+    profile.name
     }!</p>
 
           <p> Ось нові дані для входу на сайт:<br>
@@ -312,7 +319,7 @@ object User extends Controller with Secured {
 
 		    <i>З повагою, Ярослав Круковський.</i>
         """.stripMargin)
-          mUser.edit(user.id, user.email, user.name, mUser.hashPass(newPass), user.city, user.school, user.comments)
+          mUser.edit(user.id, user.email, mUser.hashPass(newPass))
           Redirect(routes.Static.home()).flashing(
             "success" -> "Новий пароль висланий на вашу поштову скриньку."
           )
@@ -326,10 +333,10 @@ object User extends Controller with Secured {
 
   // Подготовка к ЗНО
   // Главная страница подготовки
-  def preparation = withUser {
-    user =>
+  def preparation = withProfile {
+    (user, profile) =>
       implicit request =>
-      val lessons = codeToLessonsList(user.lessons)
+      val lessons = codeToLessonsList(profile.lessons)
       Ok(views.html.user.prep(user, lessons))
   }
   /**
@@ -411,8 +418,17 @@ trait Secured {
     username =>
       implicit request =>
         Some(mUser.find(username.toLong)).map {
-          user =>
+          user => 
             f(user)(request)
         }.getOrElse(onUnauthorized(request))
+  }
+
+  def withProfile(f: (mUser, mProfile) => Request[AnyContent] => Result) = withUser {
+    user =>
+    implicit request =>
+    Some(mProfile.find(user.id)).map {
+      profile =>
+      f(user, profile)(request)
+    }.getOrElse(onUnauthorized(request))
   }
 }

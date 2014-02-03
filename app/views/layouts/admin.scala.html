@@ -52,17 +52,17 @@
 <header id="header">
 		<hgroup>
 			<h1 class="site_title"><a href="/admin">Панель адміністратора</a></h1>
-			<h2 class="section_title">Головна</h2><div class="btn_view_site"><a href="/">zno.me</a></div>
+			<h2 class="section_title">@title</h2><div class="btn_view_site"><a href="/">zno.me</a></div>
 		</hgroup>
 	</header> <!-- end of header bar -->
 	
 	<section id="secondary_bar">
 		<div class="user">
-			<p>Ім'я користувача</p>
+			<p>@user.email</p>
 			<!-- <a class="logout_user" href="#" title="Logout">Logout</a> -->
 		</div>
 		<div class="breadcrumbs_container">
-			<article class="breadcrumbs"><a href="/">Адмін</a> <div class="breadcrumb_divider"></div> <a class="current">Головна</a></article>
+			<article class="breadcrumbs"><a href="@routes.Admin.main">Адмін</a> <div class="breadcrumb_divider"></div> <a class="current">@title</a></article>
 		</div>
 	</section><!-- end of secondary bar -->
 	
@@ -71,16 +71,17 @@
 		<ul class="toggle">
 			<li class="icn_new_article"><a href="#">Новий бiлет</a></li>
 			<li class="icn_edit_article"><a href="#">Редагувати білети</a></li>
-			<li class="icn_categories"><a href="#">Список білетів</a></li>
 		</ul>
+		@if(user.role == 2){
 		<h3>Користувачі</h3>
 		<ul class="toggle">
-			<li class="icn_view_users"><a href="#">Список користувачів</a></li>
+			<li class="icn_view_users"><a href="@routes.Admin.userlist">Список користувачів</a></li>
 		</ul>
 		<h3>Admin</h3>
 		<ul class="toggle">
 			<li class="icn_settings"><a href="#">I/O</a></li>
 		</ul>
+		}
 		
 		<footer>
 			<hr />

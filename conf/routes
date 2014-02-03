@@ -27,6 +27,7 @@ POST        /register                    controllers.User.createUser
 # User
 GET	    /people	                 controllers.User.search
 POST	    /search			 controllers.User.peopleSearch
+POST	    /search/ajax		 controllers.User.peopleJson			 
 GET         /profile/edit                controllers.User.edit
 POST        /profile/edit                controllers.User.changeUser
 POST        /profile/editLess            controllers.User.changeLesson
@@ -71,5 +72,12 @@ GET	    /jsroutes			 controllers.Lessons.javascriptRoutes
 
 # for news
 GET /news controllers.Admin.news
+
 # admin panel
 GET /admin controllers.Admin.main
+GET /admin/bilets controllers.Admin.biletlist
+GET /admin/users controllers.Admin.userlist
+GET /admin/io controllers.Admin.io
+GET /admin/bilet/new controllers.Admin.newbilet
+GET /admin/bilet/:id controllers.Admin.changebilet(id: Long)
+GET /admin/user/:id controllers.Admin.changeuser(id: Long)

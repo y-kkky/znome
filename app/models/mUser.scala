@@ -140,12 +140,12 @@ object mProfile{
     q.update(lessons)
   }
 
-  def findPattern(name: String, city: String): List[mUser] = dbs.withSession { implicit session =>
+  def findPattern(name: String, city: String, dropping: Int = 0): List[mUser] = dbs.withSession { implicit session =>
     //    for {a
     //      u <- users
     //      p <- Profiles.profiles if (p.name like name && p.city like city)
     //    }
-    val finders = obertkaList(profiles.filter(_.name like name).filter(_.city like city).sortBy(_.user_id.desc).take(20).list)
+    val finders = obertkaList(profiles.filter(_.name like name).filter(_.city like city).sortBy(_.user_id.desc).drop(dropping).take(20).list)
     for (f <- finders) yield (mUser.find(f.user_id))
     //    obertkaList(users.filter(_.name like name).filter(_.city like city).sortBy(_.id.desc).take(20).list)
   }

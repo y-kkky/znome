@@ -1,8 +1,7 @@
-@(users: List[mUser], num: Int)(implicit request: play.api.mvc.Request[Any])
-@import layouts._
+@(users: List[mUser], num: Int, pattern1: String, pattern2: String)(implicit request: play.api.mvc.Request[Any])
 @import models.mUser
 @import controllers.User
-@main("Рейтинг") {
+@layouts.search("Рейтинг") {
 <div class="well" style="padding-bottom: 0px;">
 	  @helper.form(action = routes.User.peopleSearch){
 	    <input type="text" id="name" name="name" placeholder="Введіть прізвище" style="width: 500px;">
@@ -48,5 +47,7 @@
 <tr onclick="document.location = '@routes.User.profile(user.id)';" style="cursor: pointer;"><td><img src="@User.gravatarFor(user.email)"</td><td>@profile.name</td><td>@profile.city</td><td>@profile.school</td></tr>
 }}
 </table>
+<div style="display: none" id="1pattern">@pattern1</div>
+<div style="display: none" id="2pattern">@pattern2</div>
 }
 }

@@ -81,19 +81,36 @@ object User extends Controller with Secured {
         pattern => {
           // Тут будет отсеиванье ненужных людей
 	  var users: List[mUser] = List()
+          var pattern1 = "%"
+          var pattern2 = "%"
 	  if(pattern._1 == "" && pattern._2 == ""){
 	    users = mProfile.findPattern("%", "%")
 	  }else{
 	    val name = "%" + pattern._1 + "%"
 	    val city = "%" + pattern._2 + "%"
+            pattern1 = name
+            pattern2 = city
 	    users = mProfile.findPattern(name, city)
 	  }
-	  Ok(views.html.user.search(users, 1))
+	  Ok(views.html.user.search(users, 1, pattern1, pattern2))
         })
   }
 
+  def peopleJson = Action { request =>
+    val next = request.body.asFormUrlEncoded.get("next")(0).toString.toInt
+    val pattern1 = request.body.asFormUrlEncoded.get("pattern1")(0).toString
+    val pattern2 = request.body.asFormUrlEncoded.get("pattern2")(0).toString
+//    val next: Long = value.get("next")[0]
+    val users = mProfile.findPattern(pattern1, pattern2, next)
+    val profiles = for (u <- users) yield mProfile.find(u.id)
+    import play.api.libs.json._
+    implicit val userFormat = Json.format[mProfile]
+    val json_users = Json.toJson(profiles)
+    Ok(json_users)
+  }
+
   def search = Action { implicit request =>
-    Ok(views.html.user.search(List(), 2))
+    Ok(views.html.user.search(List(), 2, "", ""))
   }
   /**
    * Регистрация
@@ -405,6 +422,8 @@ trait Secured {
   // Переадресация пользователя на страничку входа, при попытке зайти на запрещенные страницы.
   private def onUnauthorized(request: RequestHeader) = Results.Redirect(routes.User.login)
 
+  private def onUnauthorizedAdmin(request: RequestHeader) = Results.Redirect(routes.Static.home)
+
   // Проверка, есть ли email в сессии
   def withAuth(f: => String => Request[AnyContent] => Result) = {
     Security.Authenticated(username, onUnauthorized) {
@@ -421,6 +440,18 @@ trait Secured {
           user => 
             f(user)(request)
         }.getOrElse(onUnauthorized(request))
+  }
+
+  def withAdmin(role: Int)(f: mUser => Request[AnyContent] => Result ) = withAuth {
+    username => implicit request =>
+    if(mUser.find(username.toLong).role < role)
+      onUnauthorizedAdmin(request)
+    else{
+      Some(mUser.find(username.toLong)).map {
+        user =>
+        f(user)(request)
+      }.getOrElse(onUnauthorized(request))
+    }
   }
 
   def withProfile(f: (mUser, mProfile) => Request[AnyContent] => Result) = withUser {

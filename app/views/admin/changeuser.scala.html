@@ -1,6 +1,104 @@
-@(user: mUser)(implicit request: play.api.mvc.Request[Any])
+@(user: mUser, user_id: Long, gravatar: String, myForm: Form[(String, String, String, String,
+String, String, String, String)], lessonForm: Form[(Boolean, Boolean, Boolean,
+Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean,
+Boolean)])(implicit flash: Flash, request: play.api.mvc.Request[Any])
 @import layouts.admin
-@import helper.twitterBootstrap._
 @admin("Змінити користувача", user) {
+	@helper.form(routes.Admin.changeuser_post(user_id)) {
+                <h1>Змінити особисту інформацію</h1>
+                @myForm.globalError.map { error =>
+                    <p class="alert-error">
+                        @error.message
+                    </p>
+                }
+
+                @flash.get("error").map { message =>
+                    <p class="alert-error">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        @message
+                    </p>
+                }
+		    <article class="module width_full">
+		      <header><h3 class="tabs_involved">Змінити користувача</h3>
+                    <ul class="tabs">
+                        <li><a href="#tab1">Основні дані</a></li>
+                        <li><a href="#tab2">Місце навчання</a></li>
+                        <li><a href="#tab3">Пароль</a></li>
+                        <li><a href="#tab5">Особиста інформація</a></li>
+                        <li><a href="#tab6">Предмети</a></li>
+                    </ul>
+		    </header>
+                    <div class="tab_container">
+                        <div class="tab_content" id="tab1">
+                            @helper.inputText(myForm("email"), '_label -> "Поштова скринька", '_showConstraints -> false)
+                            @helper.inputText(myForm("name"), '_label -> "Ім'я", '_showConstraints -> false)
+                            <button type="submit" class="btn btn-primary" id="loginbutton">Готово</button>
+                        </div>
+                        <div class="tab_content" id="tab2">
+                            <div id="city_field">
+			      <label>Область:</label>
+			    <select id="city" name="city">
+			      <option value="@{models.mProfile.find(request.session.get(Security.username).getOrElse("").toLong).city}" selected>Оберіть область</option>
+			      <option value="Вінницька">Вінницька</option>
+			      <option value="Волинська">Волинська</option>
+			      <option value="Дніпропетровська">Дніпропетровська</option>
+			      <option value="Донецька">Донецька</option>
+			      <option value="Житомирська">Житомирська</option>
+			      <option value="Закарпатська">Закарпатська</option>
+			      <option value="Запорізька">Запорізька</option>
+			      <option value="Івано-Франківська">Івано-Франківська</option>
+				<option value="Київська">Київська</option>
+				<option value="Кіровоградська">Кіровоградська</option>
+				<option value="Луганська">Луганська</option>
+				<option value="Львівська">Львівська</option>
+				<option value="Миколаївська">Миколаївська</option>
+				<option value="Одеська">Одеська</option>
+				<option value="Полтавська">Полтавська</option>
+				<option value="Рівненська">Рівненська</option>
+				<option value="Сумська">Сумська</option>
+				<option value="Тернопільська">Тернопільська</option>
+				<option value="Харківська">Харківська</option>
+				<option value="Херсонська">Херсонська</option>
+				<option value="Хмельницька">Хмельницька</option>
+				<option value="Черкаська">Черкаська</option>
+				<option value="Чернівецька">Чернівецька</option>
+				<option value="Чернігівська">Чернігівська</option>
+			    </select>
+			    </div>
+                            @helper.inputText(myForm("school"), '_label -> "Школа", '_showConstraints -> false)
+                            <button type="submit" class="btn btn-primary" id="infobutton">Готово</button>
+                        </div>
+                        <div class="tab_content" id="tab3">
+                            @helper.inputPassword(myForm("password"), '_label -> "Старий пароль", '_showConstraints -> false)
+                            @helper.inputPassword(myForm("newpass"), '_label -> "Новий пароль", '_showContsraints -> false)
+                            @helper.inputPassword(myForm("confirm"), '_label -> "Підтвердження пароля", '_showConstraints -> false)
+                            <button type="submit" class="btn btn-primary" id="passbutton">Готово</button>
+                        </div>
+                        <div class="tab_content" id="tab5">
+                            @helper.inputText(myForm("comments"), '_label -> "Особиста інформація", '_showContsraints -> false)
+                            <button type="submit" class="btn btn-primary" id="commbutton">Готово</button>
+                        </div> }
+                        <div class="tab_content" id="tab6">
+                            @helper.form(routes.Admin.changeLesson(user_id)){
+                                <table>
+                                    <tr><td>Українська мова і література&nbsp;&nbsp;&nbsp;</td><td><input type="checkbox" id="ukr" name="ukr" value="true"></td></tr>
+                                    <tr><td>Математика</td><td><input type="checkbox" id="mat" name="mat" value="true"></td></tr>
+                                    <tr><td>Англійська мова</td><td><input type="checkbox" id="ang" name="ang" value="true"></td></tr>
+                                    <tr><td>Іноземна мова</td><td><input type="checkbox" id="ino" name="ino" value="true"></td></tr>
+                                    <tr><td>Фізика</td><td><input type="checkbox" id="fiz" name="fiz" value="true"></td></tr>
+                                    <tr><td>Хімія</td><td><input type="checkbox" id="him" name="him" value="true"></td></tr>
+                                    <tr><td>Біологія</td><td><input type="checkbox" id="bio" name="bio" value="true"></td></tr>
+                                    <tr><td>Географія</td><td><input type="checkbox" id="geo" name="geo" value="true"></td></tr>
+                                    <tr><td>Історія України</td><td><input type="checkbox" id="isy" name="isy" value="true"></td></tr>
+                                    <tr><td>Всесвітня історія</td><td><input type="checkbox" id="isv" name="isv" value="true"></td></tr>
+                                    <tr><td>Всесвітня література</td><td><input type="checkbox" id="lit" name="lit" value="true"></td></tr>
+                                    <tr><td>Російська мова</td><td><input type="checkbox" id="rus" name="rus" value="true"></td></tr>
+                                </table><br>
+
+                                <button type="submit" class="btn btn-primary">Готово</button>
+                            }
+                    </div>
+                </div>
+            </div>
 
 }

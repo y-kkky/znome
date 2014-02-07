@@ -1,5 +1,8 @@
 var MYAPP = {};
 MYAPP.counter = 1;
+window.onbeforeundload = function(e) {
+    return "hello";
+}
 function addquest(){
     // get type
     var counter = MYAPP.counter;

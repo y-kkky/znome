@@ -193,7 +193,7 @@ object User extends Controller with Secured {
   def changeUser = withProfile { (user, profile) =>
     implicit request =>
       editForm.bindFromRequest.fold(
-        formWithErrors => BadRequest(views.html.user.edit(gravatarFor(username(request).toString), formWithErrors, lessonForm)),
+        formWithErrors => BadRequest(views.html.user.edit(gravatarFor(user.email), formWithErrors, lessonForm)),
         user_form => {
           if(user_form._4 != "" && user_form._5 != "") {
             if(user.pass != mUser.hashPass(user_form._3))
@@ -232,7 +232,7 @@ object User extends Controller with Secured {
   def changeLesson = withProfile { (user, profile) =>
     implicit request =>
       lessonForm.bindFromRequest.fold(
-        formWithErrors => BadRequest(views.html.user.edit(gravatarFor(username(request).toString), editForm.fill(user.email, profile.name, "", "", "", profile.city, profile.school, profile.comments), lessonForm)),
+        formWithErrors => BadRequest(views.html.user.edit(gravatarFor(user.email), editForm.fill(user.email, profile.name, "", "", "", profile.city, profile.school, profile.comments), lessonForm)),
         lessons => {
           val newlist = lessons.productIterator.toList
           val listComp = List(1, 2, 3, 4, 5, 6, 7, 8, 9, "a", "b", "c")

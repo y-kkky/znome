@@ -139,7 +139,7 @@ object DailyStat{
 class microDailyStats(tag: Tag) extends Table[(Long, String, Long, Double, String, Int)](tag, "microDailyStat") {
   def user_id = column[Long]("user_id", O.NotNull)
   def time = column[String]("curr_time", O.NotNull)
-  def result_time = column[Long]("res_time")
+  def result_time = column[Long]("res_time", O.NotNull)
   def score = column[Double]("score", O.NotNull)
   def ids = column[String]("ids", O.NotNull)
   def typ = column[Int]("typ", O.NotNull)
@@ -164,13 +164,13 @@ object microDailyStat{
       count
     }
     Cache.set("daily_count", cached+1, 60*120)
-    microdailystats.map(m => (m.user_id, m.time, m.score, m.ids, m.typ)) += (user_id, time, score, ids, typ)
+    microdailystats.map(m => (m.user_id, m.time, m.result_time, m.score, m.ids, m.typ)) += (user_id, time, 0, score, ids, typ)
   }
 
   def update(user_id: Long, time: Long, current_date: String, score: Double, typ: Int) = dbs.withSession { implicit session => 
-    val q = for { m <- microdailystats if m.user_id === user_id; if m.time === current_date;if m.typ === typ} yield (m.user_id, m.time, m.score, m.typ)
+    val q = for { m <- microdailystats if m.user_id === user_id; if m.time === current_date;if m.typ === typ} yield (m.user_id, m.result_time, m.score, m.typ)
     // ВОЗМЖОНО ОШИБКА
-    q.update(user_id, current_date, score, typ)
+    q.update(user_id, time, score, typ)
   }
 
   def getForCheck(user_id: Long, time: String, typ: Int): List[microDailyStat] = dbs.withSession { implicit session => 

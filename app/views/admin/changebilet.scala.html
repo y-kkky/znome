@@ -1,6 +1,20 @@
-@(user: mUser)(implicit request: play.api.mvc.Request[Any])
+@(user: mUser, bilet: Bilet, myForm: Form[(String, Long, String)])(implicit
+flash: Flash, orequest: play.api.mvc.Request[Any])
 @import layouts.admin
 @import helper.twitterBootstrap._
 @admin("Зміна білету", user) {
+@flash.get("success").map { message =>
+<h4 class="alert_success">@message</h4>
+}
+@helper.form(action = routes.Admin.changeBiletMain(bilet.id)){
+  @helper.inputText(myForm("name"), '_label -> "Назва", '_showConstraints ->
+false)
+  @helper.inputText(myForm("lesson_id"), '_label -> "lesson_id",
+'_showConstraints -> false)
+  @helper.inputText(myForm("time"), '_label -> "Час проходження",
+'_showContstraints -> false)
+<button type="submit" class="btn btn-primary">Готово</button>
+}
+
 
 }

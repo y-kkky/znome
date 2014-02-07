@@ -1,6 +1,66 @@
-@(user: mUser)(implicit request: play.api.mvc.Request[Any])
+@(user: mUser, users: List[mUser], num: Int, pattern1: String, pattern2:
+String)(implicit flash: Flash, request: play.api.mvc.Request[Any])
 @import layouts.admin
-@import helper.twitterBootstrap._
 @admin("Користувачі", user) {
+                @flash.get("success").map { message =>
+                    <h4 class="alert_success">
+                        @message
+                    </h4>
+                }
+
+	    <article class="module width_full">
+	      <header><h3>Users</h3></header>
+
+	  @helper.form(action = routes.Admin.peopleSearch){
+	    <input type="text" id="name" name="name" placeholder="Введіть прізвище" style="width: 500px;">
+	    <select id="city" name="city">
+			      <option value="" selected>Оберіть область</option>
+			      <option value="Вінницька">Вінницька</option>
+			      <option value="Волинська">Волинська</option>
+			      <option value="Дніпропетровська">Дніпропетровська</option>
+			      <option value="Донецька">Донецька</option>
+			      <option value="Житомирська">Житомирська</option>
+			      <option value="Закарпатська">Закарпатська</option>
+			      <option value="Запорізька">Запорізька</option>
+			      <option value="Івано-Франківська">Івано-Франківська</option>
+				<option value="Київська">Київська</option>
+				<option value="Кіровоградська">Кіровоградська</option>
+				<option value="Луганська">Луганська</option>
+				<option value="Львівська">Львівська</option>
+				<option value="Миколаївська">Миколаївська</option>
+				<option value="Одеська">Одеська</option>
+				<option value="Полтавська">Полтавська</option>
+				<option value="Рівненська">Рівненська</option>
+				<option value="Сумська">Сумська</option>
+				<option value="Тернопільська">Тернопільська</option>
+				<option value="Харківська">Харківська</option>
+				<option value="Херсонська">Херсонська</option>
+				<option value="Хмельницька">Хмельницька</option>
+				<option value="Черкаська">Черкаська</option>
+				<option value="Чернівецька">Чернівецька</option>
+				<option value="Чернігівська">Чернігівська</option>
+			    </select>
+	    <input type="submit" class="btn-inverse" value="Знайти" style="width: 100px;">
+	    }
+	    @if(users.length == 0 && num == 1){
+	    <h2>Нікого не знайдено</h2>
+	    }else{
+	    @if(num == 1){
+	   <br><table id="people" class="tablesorter">
+<tr align=left><th class="header">ID</th><th class="header">Ім'я та
+    прізвище</th><th class="header">Область</th><th class="header">Школа</th><th class="header">Дії</th></tr>
+}
+@users.map { user =>
+@defining(models.mProfile.find(user.id)){ profile=>
+<tr align=left><td>@profile.user_id</td><td>@profile.name</td><td>@profile.city</td><td>@profile.school</td>
+<td><a href="@routes.Admin.changeUser(profile.user_id)"><img src="@routes.Assets.at("images/admin/icn_edit.png")"/></a></td>
+<td><a href="@routes.Admin.deleteUser(profile.user_id)"><img src="@routes.Assets.at("images/admin/icn_trash.png")"/></a></td>
+</tr>
+}}
+</table>
+</article>
+<div style="display: none" id="1pattern">@pattern1</div>
+<div style="display: none" id="2pattern">@pattern2</div>
+}
 
 }

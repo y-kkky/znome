@@ -3,6 +3,7 @@ package models
 import play.api.db._
 import play.api.Play.current
 import play.api.cache._
+import play.api.Play.current
 import scala.slick.driver.PostgresDriver.simple._
 import Helper.dbs
 import akka.util.Crypt
@@ -77,8 +78,19 @@ object mUser{
   }
 
   def updateRank(user_id: Long, rank: Int) = dbs.withSession { implicit session =>  
-	val q = for { u <- users if u.id === user_id } yield u.rank
+    val q = for { u <- users if u.id === user_id } yield u.rank
     q.update(rank)
+  }
+
+  def delete(user_id: Long) = dbs.withSession { implicit session =>
+    users.where(u => u.id === user_id).delete
+    mProfile.delete(user_id)
+    Cache.remove("user_cache" + user_id)
+    Cache.remove("profile_cache" + user_id)
+    val cached = Cache.getOrElse("user_count"){
+      mUser.count
+    }
+    Cache.set("user_count", cached-1, 60*120)
   }
 
   def count: Long = dbs.withSession { implicit session =>  
@@ -134,6 +146,9 @@ object mProfile{
     q2.update(name, city, school, comments)
   }
 
+  def delete(user_id: Long) = dbs.withSession { implicit session =>
+    profiles.where(u => u.user_id === user_id).delete
+  }
 
   def editLessons(id: Long, lessons: String) = dbs.withSession { implicit session =>  
     val q = for { p <- profiles if p.user_id === id } yield p.lessons
@@ -145,7 +160,7 @@ object mProfile{
     //      u <- users
     //      p <- Profiles.profiles if (p.name like name && p.city like city)
     //    }
-    val finders = obertkaList(profiles.filter(_.name like name).filter(_.city like city).sortBy(_.user_id.desc).drop(dropping).take(20).list)
+    val finders = obertkaList(profiles.filter(_.name.toUpperCase like name.toUpperCase).filter(_.city like city).sortBy(_.user_id.desc).drop(dropping).take(20).list)
     for (f <- finders) yield (mUser.find(f.user_id))
     //    obertkaList(users.filter(_.name like name).filter(_.city like city).sortBy(_.id.desc).take(20).list)
   }

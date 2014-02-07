@@ -1,6 +1,22 @@
-@(user: mUser)(implicit request: play.api.mvc.Request[Any])
+@(user: mUser, lessons: List[Lesson])(implicit request: play.api.mvc.Request[Any])
 @import layouts.admin
 @import helper.twitterBootstrap._
 @admin("Білети", user) {
 
+@lessons.map { lesson =>
+<article class="module width_full">
+  <header><h3>@lesson.name ID: @lesson.id</h3></header>
+  <table id="bilets" class="tablesorter">
+    <tr align=left><th class="header">ID</th><th class="header">Назва</th><th class="header">Час</th><th class="header">Дії</th></tr>
+    
+    
+    @models.Bilet.inLesson(lesson.id).map { bilet =>
+    @if(bilet.lesson_id == lesson.id){
+    <tr align=left><td>@bilet.id</td><td>@bilet.name</td><td>@bilet.time</td><td><a href="@routes.Admin.changebilet(bilet.id)"><img src="@routes.Assets.at("images/admin/icn_edit.png")"/></a></td>
+      <td><a href=""><img src="@routes.Assets.at("images/admin/icn_trash.png")"/></a></td>
+    </tr>
+    }}
+  </table>
+</article>
+}
 }

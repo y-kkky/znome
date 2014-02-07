@@ -277,7 +277,7 @@ object Lessons extends Controller{
     // Находим текущую дату
     var ra: Float = 0
     var max: Float = 0			     
-    val current_date = currentDate
+    def current_date = currentDate
     val microDaily = microDailyStat.getForCheck(user.id, current_date, typ)
     // Получаем вопросы, на которые отвечал пользователь
     val ids_list: List[String] = (microDaily(0).ids).split("~").toList
@@ -439,6 +439,7 @@ object Lessons extends Controller{
 
   // Подгрузка билетов 
   //------------------------------------------------------------
+  
   def getLoad = withUser { user => implicit request =>
     if(user.id != 1) Redirect(routes.Static.home)
     else Ok(views.html.lessons.load("Upload"))
@@ -460,7 +461,7 @@ object Lessons extends Controller{
       )
     }
   }
-  
+   
   // Функция парсит xml документ и создает билет
   def parseBilet(data: scala.xml.Elem){
     // Шаг первый. Получаем id предмета

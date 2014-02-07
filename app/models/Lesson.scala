@@ -79,6 +79,15 @@ object Bilet{
       biletId
   }
 
+  def update(id: Long, name: String, lesson_id: Long, time: String) = dbs.withSession { implicit session =>
+    val q = for { b <- bilets if b.id === id } yield (b.lesson_id, b.name, b.time)
+    q.update(lesson_id, name, time)
+    val cached = Cache.getOrElse("bilet_cache" + id){
+      Bilet.find(id)
+    }
+    Cache.set("bilet_cache" + id, cached.copy(lesson_id = lesson_id, name= name, time = time), 60*120)
+  }
+
   def getLast: Bilet = dbs.withSession { implicit session => 
     obertka(bilets.sortBy(_.id.desc).firstOption)
   }

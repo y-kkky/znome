@@ -27,10 +27,12 @@ POST        /register                    controllers.User.createUser
 # User
 GET	    /people	                 controllers.User.search
 POST	    /search			 controllers.User.peopleSearch
+POST	    /admin/search		 controllers.Admin.peopleSearch
 POST	    /search/ajax		 controllers.User.peopleJson			 
 GET         /profile/edit                controllers.User.edit
 POST        /profile/edit                controllers.User.changeUser
 POST        /profile/editLess            controllers.User.changeLesson
+POST	    /admin/user/:id/edilLesson	 controllers.Admin.changeLesson(id: Long)
 GET         /profile/:id                 controllers.User.profile(id: Long)
 GET 	    /preparation 		 controllers.User.preparation
 
@@ -78,6 +80,10 @@ GET /admin controllers.Admin.main
 GET /admin/bilets controllers.Admin.biletlist
 GET /admin/users controllers.Admin.userlist
 GET /admin/io controllers.Admin.io
+GET /admin/bilets controllers.Admin.biletlist
 GET /admin/bilet/new controllers.Admin.newbilet
 GET /admin/bilet/:id controllers.Admin.changebilet(id: Long)
-GET /admin/user/:id controllers.Admin.changeuser(id: Long)
+POST /admin/bilet/:id/post controllers.Admin.changeBiletMain(id: Long)
+GET /admin/user/:id controllers.Admin.changeUser(id: Long)
+POST /admin/user/:id/post controllers.Admin.changeuser_post(id: Long)
+GET /admin/user/:id/delete controllers.Admin.deleteUser(id: Long)
